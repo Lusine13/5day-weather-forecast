@@ -13,7 +13,34 @@ const WeatherForecast = () => {
             }
             const data = await response.json();
             
-            setWeatherData(data.list.filter((_, index) => index % 8 === 0)); 
+            const dailyData = {};
+            data.list.forEach(item => {
+                const date = new Date(item.dt * 1000).toLocaleDateString();
+                
+                if (!dailyData[date]) {
+                    dailyData[date] = {
+                        min: item.main.temp_min,
+                        max: item.main.temp_max,
+                        icon: item.weather[0].icon,
+                        description: item.weather[0].description
+                    };
+                } else {
+                    dailyData[date].min = Math.min(dailyData[date].min, item.main.temp_min);
+                    dailyData[date].max = Math.max(dailyData[date].max, item.main.temp_max);
+                }
+            });
+
+            
+            const result = Object.entries(dailyData).slice(0, 5).map(([date, temps]) => ({
+                date,
+                min: temps.min,
+                max: temps.max,
+                icon: temps.icon,
+                description: temps.description
+            }));
+
+            setWeatherData(result);   
+            
         } catch (error) {
             console.log("An error occurred while fetching the weather data.", error);
         }
@@ -29,10 +56,10 @@ const WeatherForecast = () => {
             <div className="forecast-container">
                 {weatherData.map((day, index) => (
                     <div className="forecast-card" key={index}>
-                        <h2>{new Date(day.dt * 1000).toLocaleDateString()}</h2>
-                        <img src={`https://openweathermap.org/img/wn/${day.weather[0].icon}.png`} alt={day.weather[0].description} />
-                        <p>High: {day.main.temp_max}°C</p>
-                        <p>Low: {day.main.temp_min}°C</p>                        
+                        <h2>{day.date}</h2>
+                        <img src={`https://openweathermap.org/img/wn/${day.icon}.png`} alt={day.description} />
+                        <p>High: {day.max}°C</p>
+                        <p>Low: {day.min}°C</p>                       
                     </div>
                 ))}
             </div>
