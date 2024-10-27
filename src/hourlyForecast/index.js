@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import './index.css';
 
 const HourlyForecast = () => {
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ const HourlyForecast = () => {
                     <div className="hourly-forecast-card" key={index}>
                         <h3>{hour.time}</h3>
                         <img src={`https://openweathermap.org/img/wn/${hour.icon}.png`} alt={hour.description} />
-                        <p>{hour.temp}°C</p>
+                        <p>{Math.round(hour.temp)}°C</p> 
                         <p>{hour.description}</p>
                     </div>
                 )) || <p>No hourly data available.</p>}

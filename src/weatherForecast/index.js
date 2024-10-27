@@ -71,8 +71,7 @@ const WeatherForecast = () => {
     }, []);
 
     
-    const handleDayClick = (year, month, day) => {
-      //  navigate(`/hourly-forecast/${year}/${month}/${day}`, { state: { hourlyData } });
+    const handleDayClick = (year, month, day) => {      
      navigate(`/hourly-forecast/${year}`, { state: { hourlyData } });
     };
     
@@ -88,8 +87,8 @@ const WeatherForecast = () => {
                     <div className="forecast-card" key={index} onClick={() => handleDayClick(day.date)}>
                         <h2>{day.date}</h2>
                         <img src={`https://openweathermap.org/img/wn/${day.icon}.png`} alt={day.description} />
-                        <p>High: {day.max}°C</p>
-                        <p>Low: {day.min}°C</p>
+                        <p>High: {Math.round(day.max)}°C</p>  
+                        <p>Low: {Math.round(day.min)}°C</p>
                     </div>
                 ))}
             </div>
