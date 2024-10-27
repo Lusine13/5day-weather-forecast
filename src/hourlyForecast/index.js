@@ -1,22 +1,24 @@
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 
 const HourlyForecast = () => {
     const navigate = useNavigate();
-    const location = useLocation(); // Use useLocation to get the location object
-
-    const { hourlyData, selectedDay } = location.state || {}; // Access state safely
+    const { month, day, year } = useParams();
+    const formattedDate = `${month}/${day}/${year}`;  
+    
+    const location = useLocation();
+    const hourlyData = location.state?.hourlyData; 
 
     const goBack = () => {
-        navigate(-1); // Go back to the previous page
+        navigate(-1);
     };
-
+    
     return (
         <div>
             <button onClick={goBack}>Go Back</button>
-            <h2>Hourly Forecast for {selectedDay}</h2>
+            <h2>Hourly Forecast for {formattedDate}</h2>
             <div className="hourly-forecast-container">
-                {hourlyData?.[selectedDay]?.map((hour, index) => (
+                {hourlyData?.[formattedDate]?.map((hour, index) => (
                     <div className="hourly-forecast-card" key={index}>
                         <h3>{hour.time}</h3>
                         <img src={`https://openweathermap.org/img/wn/${hour.icon}.png`} alt={hour.description} />
@@ -26,7 +28,9 @@ const HourlyForecast = () => {
                 )) || <p>No hourly data available.</p>}
             </div>
         </div>
+      
     );
+
 };
 
 export default HourlyForecast;

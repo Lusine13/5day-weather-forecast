@@ -58,11 +58,11 @@ const WeatherForecast = () => {
 
             setWeatherData(dailyResult);
             setHourlyData(hourlyDataMap);
-            setLoading(false); // End loading
+            setLoading(false); 
 
         } catch (error) {
-            setError(error.message); // Set error message
-            setLoading(false); // End loading
+            setError(error.message); 
+            setLoading(false); 
         }
     };
 
@@ -70,13 +70,15 @@ const WeatherForecast = () => {
         fetchWeather();
     }, []);
 
-    const handleDayClick = (date) => {
-        navigate('/hourly-forecast', { state: { selectedDay: date, hourlyData } });
+    
+    const handleDayClick = (year, month, day) => {
+      //  navigate(`/hourly-forecast/${year}/${month}/${day}`, { state: { hourlyData } });
+     navigate(`/hourly-forecast/${year}`, { state: { hourlyData } });
     };
     
-
-    if (loading) return <p>Loading...</p>; // Loading state
-    if (error) return <p>Error: {error}</p>; // Error message
+    
+    if (loading) return <p>Loading...</p>; 
+    if (error) return <p>Error: {error}</p>; 
 
     return (
         <div>
